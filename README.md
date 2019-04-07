@@ -12,4 +12,4 @@ This implementation of the game is just a text based version for sake of time. T
     * Can be done on windows using `python game_controller.py` if Python3 is on PATH.
 
 **Code Understanding:**
-The code if fully commented. Feel free to look through the four `.py` files containe in the project.
+The code if fully commented. Feel free to look through the four `.py` files contained in the project.
