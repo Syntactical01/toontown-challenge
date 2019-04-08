@@ -2,7 +2,29 @@ from map_layout import Toontown_Map
 from toon import Toon
 from cog import Cog
 import random
+import readline # For tab auto completion
 
+
+class MyCompleter(object):
+    """
+    This class is used to allow tab auto completion in the game.
+    """
+    def __init__(self, options):
+        self.options = sorted(options)
+
+    def complete(self, text, state):
+        if state == 0:  # on first trigger, build possible matches
+            if text:  # cache matches (entries that start with entered text)
+                self.matches = [s for s in self.options 
+                                    if s and s.startswith(text)]
+            else:  # no text entered, all matches possible
+                self.matches = self.options[:]
+
+        # return match indexed by state
+        try: 
+            return self.matches[state]
+        except IndexError:
+            return None
 
 class Game_Controller:
     def __init__(self):
@@ -52,6 +74,11 @@ class Game_Controller:
 
             # Wait for a valid input
             while True:
+                # The next three lines are for tab auto completion
+                completer = MyCompleter([x.get_name() for x in self.toon.get_location().neighbors])
+                readline.set_completer(completer.complete)
+                readline.parse_and_bind('tab: complete')
+
                 location = input("Enter Location (Ex: {}): ".format(next(iter(self.toon.get_location().neighbors)).get_name()))
                 # If location is not within the number of locations we have.
                 next_location = self.map.get_vertex(location)
@@ -98,6 +125,9 @@ class Game_Controller:
         print("Would you like to throw a pie in the tunnel incase there is a cog?")
         print("You have {} pies left.".format(self.toon.pies))
         while True:
+            completer = MyCompleter([])
+            readline.set_completer(completer.complete)
+            readline.parse_and_bind('tab: complete')
             confirmation = input("Throw Pie? (y or n): ")
             # If location is not within the number of locations we have.
             if confirmation is 'y' or confirmation is 'n': break

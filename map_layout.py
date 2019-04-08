@@ -148,7 +148,7 @@ class Toontown_Map:
 
     def get_vertices(self):
         """
-        Returns a list of vertice names. (i.e. road names and playground names)
+        Returns a set of vertice names. (i.e. road names and playground names)
         """
         return self.vertices.keys()
 
